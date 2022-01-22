@@ -1,4 +1,5 @@
 import numpy as np
+import carla
 
 
 def get_intrinsic_matrix(camera_bp):
@@ -12,3 +13,11 @@ def get_intrinsic_matrix(camera_bp):
     K[1, 2] = image_h / 2.0
     return K
 
+
+def carla_img_to_np_image(image):
+    image.convert(carla.ColorConverter.Raw)
+    array = np.frombuffer(image.raw_data, dtype=np.dtype("uint8"))
+    array = np.reshape(array, (image.height, image.width, 4))
+    array = array[:, :, :3]
+    image = array[:, :, ::-1]
+    return image

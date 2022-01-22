@@ -34,21 +34,22 @@ class CameraGeometry(object):
         self.image_width = image_width
         self.image_height = image_height
         self.field_of_view_deg = field_of_view_deg
-        # camera intriniscs and extrinsics
+        # camera intrinsic and extrinsic
         self.intrinsic_matrix = self.get_intrinsic_matrix(field_of_view_deg, image_width, image_height)
         self.inverse_intrinsic_matrix = np.linalg.inv(self.intrinsic_matrix)
-        ## Note that "rotation_cam_to_road" has the math symbol R_{rc} in the book
+        # Note that "rotation_cam_to_road" has the math symbol R_{rc} in the book
         yaw = np.deg2rad(yaw_deg)
         pitch = np.deg2rad(pitch_deg)
         roll = np.deg2rad(roll_deg)
         cy, sy = np.cos(yaw), np.sin(yaw)
         cp, sp = np.cos(pitch), np.sin(pitch)
         cr, sr = np.cos(roll), np.sin(roll)
-        rotation_road_to_cam = np.array([[cr*cy+sp*sr+sy, cr*sp*sy-cy*sr, -cp*sy],
+        rotation_road_to_cam = np.array([[cr*cy+sp*sr+sy, cr*sp*sy - cy*sr, -cp*sy],
                                             [cp*sr, cp*cr, sp],
-                                            [cr*sy-cy*sp*sr, -cr*cy*sp -sr*sy, cp*cy]])
-        self.rotation_cam_to_road = rotation_road_to_cam.T # for rotation matrices, taking the transpose is the same as inversion
-        self.translation_cam_to_road = np.array([0.0,-self.height,0.0])
+                                            [cr*sy-cy*sp*sr, -cr*cy*sp - sr*sy, cp*cy]])
+        # for rotation matrices, taking the transpose is the same as inversion
+        self.rotation_cam_to_road = rotation_road_to_cam.T
+        self.translation_cam_to_road = np.array([0.0,-self.height, 0.0])
         self.trafo_cam_to_road = np.eye(4)
         self.trafo_cam_to_road[0:3,0:3] = self.rotation_cam_to_road
         self.trafo_cam_to_road[0:3,3] = self.translation_cam_to_road

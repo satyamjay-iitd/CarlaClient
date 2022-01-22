@@ -1,8 +1,8 @@
-from .camera_geometry import CameraGeometry
+# from .camera_geometry import CameraGeometry
+from .camera_geometry_numba import CameraGeometry
 import numpy as np
 import cv2
 import torch
-from fastseg import MobileV3Small
 
 
 class LaneDetector:

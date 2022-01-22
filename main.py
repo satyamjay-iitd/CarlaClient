@@ -9,7 +9,7 @@ import pygame
 from LaneDetection import LaneDetector
 from LaneDetection.camera_geometry import CameraGeometry
 from UI import MainWindow
-from utils import get_intrinsic_matrix
+from utils import get_intrinsic_matrix, carla_img_to_np_image
 import SensorManager
 import DisplayManager
 
@@ -51,11 +51,7 @@ def add_features(sim: Simulator, ld_selected: bool, od_selected: bool):
                                              display_pos=[0, 0])
                                              
         def lane_detection_listener(image):
-            image.convert(carla.ColorConverter.Raw)
-            array = np.frombuffer(image.raw_data, dtype=np.dtype("uint8"))
-            array = np.reshape(array, (image.height, image.width, 4))
-            array = array[:, :, :3]
-            image = array[:, :, ::-1]
+            image = carla_img_to_np_image(image)
             poly_left, poly_right, left_mask, right_mask = ld.get_fit_and_probs(image)
 
             # Overlay the detected lane lines on the image for visualization

@@ -3,6 +3,8 @@ import numpy as np
 import carla
 import pygame
 
+from utils import carla_img_to_np_image
+
 
 class CustomTimer:
     def __init__(self):
@@ -96,14 +98,10 @@ class SensorManager:
         # image.save_to_disk('_out/%06d.png' % image.frame)
         t_start = self.timer.time()
 
-        image.convert(carla.ColorConverter.Raw)
-        array = np.frombuffer(image.raw_data, dtype=np.dtype("uint8"))
-        array = np.reshape(array, (image.height, image.width, 4))
-        array = array[:, :, :3]
-        array = array[:, :, ::-1]
+        image = carla_img_to_np_image(image)
 
         if self.display_man.render_enabled():
-            self.surface = pygame.surfarray.make_surface(array.swapaxes(0, 1))
+            self.surface = pygame.surfarray.make_surface(image.swapaxes(0, 1))
 
         t_end = self.timer.time()
         self.time_processing += (t_end - t_start)
