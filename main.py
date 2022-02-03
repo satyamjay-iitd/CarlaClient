@@ -192,8 +192,7 @@ def add_features(simulator: Simulator, ld_selected: bool, od_selected: bool):
     if ld_selected:
         print("Initializing Lane Detection")
         cg = CameraGeometry()
-        ld = LaneDetector(model_path=Path(r"D:\IITD classes\Semester 4\CarlaClient\LaneDetection\fastai_model.pth").absolute(),
-                          cam_geom=cg)
+        ld = LaneDetector(cam_geom=cg)
 
         print("\t Adding Camera Sensor")
         camera = SensorManager.SensorManager(world, simulator.display_manager, 'RGBCamera',
