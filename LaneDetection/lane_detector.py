@@ -1,5 +1,4 @@
-# from .camera_geometry import CameraGeometry
-from .camera_geometry_numba import CameraGeometry
+from .camera_geometry import CameraGeometry
 import numpy as np
 import cv2
 import torch
@@ -43,9 +42,9 @@ class LaneDetector:
         probs_flat = np.ravel(probs[self.cut_v:, :])
         mask = probs_flat > 0.3
         if mask.sum() > 0:
-            coeffs = np.polyfit(self.grid[:,0][mask], self.grid[:,1][mask], deg=3, w=probs_flat[mask])
+            coeffs = np.polyfit(self.grid[:, 0][mask], self.grid[:, 1][mask], deg=3, w=probs_flat[mask])
         else:
-            coeffs = np.array([0.,0.,0.,0.])
+            coeffs = np.array([0., 0., 0., 0.])
         return np.poly1d(coeffs)
 
     def __call__(self, image):
