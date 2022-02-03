@@ -1,7 +1,5 @@
 import open3d as o3d
 import numpy as np
-from open3d.cpu.pybind.geometry import AxisAlignedBoundingBox
-import utils
 
 VEHICLE_LABEL = 10
 PEDESTRIAN_LABEL = 4
